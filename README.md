@@ -1,2 +1,2 @@
 # Project-FTP
-This work is realize by: Javier Padial González &amp; David Ortiz Sierra
+This work is realized by: Javier Padial González &amp; David Ortiz Sierra
