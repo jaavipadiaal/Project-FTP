@@ -1,0 +1,20 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+ 
+  config.vm.box = "debian/bookworm64"
+
+  config.vm.define "servidor" do |s|
+    s.vm.hostname = "mirror.sistema.sol"
+    s.vm.network "private_network", ip: "192.168.56.10"
+    s.vm.provision "file", source: "file/vsftpd.conf", destination: "/tmp/vsftpd.conf"
+    s.vm.provision "file", source: "file/banner.msg", destination: "/tmp/banner.msg"
+    s.vm.provision "shell", path: "file/inicio-servidor.sh"
+
+  end
+  config.vm.define "cliente" do |c|
+    c.vm.hostname = "cliente"
+    c.vm.network "private_network", ip: "192.168.56.11"
+  end
+end
