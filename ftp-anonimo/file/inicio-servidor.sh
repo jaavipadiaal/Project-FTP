@@ -13,4 +13,4 @@ chown root:root /srv/ftp/.message
 chmod 644 /etc/vsftpd.conf
 chmod 644 /srv/ftp/.message
 
-sytemctl restart vsftpd
+systemctl restart vsftpd
