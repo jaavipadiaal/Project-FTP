@@ -1,0 +1,56 @@
+---
+- name: Configuración Servidor FTP Seguro
+  hosts: all
+  become: yes
+  tasks:
+    - name: Instalar vsftpd y OpenSSL
+      apt:
+        name: [vsftpd, openssl]
+        state: present
+        update_cache: yes
+
+    - name: Crear usuarios locales
+      user:
+        name: "{{ item }}"
+        password: "{{ 'password' | password_hash('sha512') }}"
+      loop: [luis, maria, miguel]
+
+    - name: Crear archivos de prueba para luis
+      file:
+        path: "/home/luis/{{ item }}"
+        state: touch
+      loop: [luis1.txt, luis2.txt]
+
+    - name: Generar certificado SSL autofirmado
+      command: >
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048
+        -keyout /etc/ssl/private/vsftpd.pem
+        -out /etc/ssl/certs/example.test.pem
+        -subj "/C=ES/ST=Granada/L=Granada/O=Sistema/CN=ftp.example.test"
+      args:
+        creates: /etc/ssl/certs/example.test.pem
+
+    - name: Copiar lista de usuarios no enjaulados (maria)
+      copy:
+        content: "maria"
+        dest: /etc/vsftpd.chroot_list
+
+    - name: Aplicar configuración de vsftpd
+      template:
+        src: templates/vsftpd.conf.j2
+        dest: /etc/vsftpd.conf
+      notify: Reiniciar vsftpd
+
+  handlers:
+    - name: Reiniciar vsftpd
+      service:
+        name: vsftpd
+        state: restarted
+        
+    - name: Configurar lftp para ignorar certificados autofirmados
+  copy:
+    content: "set ssl:verify-certificate no"
+    dest: /home/vagrant/.lftprc
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
