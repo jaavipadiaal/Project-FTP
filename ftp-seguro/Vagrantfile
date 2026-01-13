@@ -17,6 +17,6 @@ end
   config.vm.define "cliente" do |c|
     c.vm.hostname = "cliente"
     c.vm.network "private_network", ip: "192.168.56.11"
-    c.vm.provision "shell", inline: "apt-get update && apt-get install -y ftp filezilla"
+    c.vm.provision "shell", inline: "apt-get update && apt-get install -y ftp filezilla && apt-get install lftp -y"
   end
 end
