@@ -15,11 +15,11 @@ end
     c.vm.hostname = "cliente"
     c.vm.network "private_network", ip: "192.168.56.11"
     c.vm.provision "shell", inline: "apt-get update && apt-get install -y ftp filezilla && apt-get install lftp -y"
-    c.vm.provision "file", source: "file/vsftpd.conf", destination: "/tmp/vsftpd.conf"
+    c.vm.provision "file", source: "file/vsfptd.conf", destination: "/tmp/vsfptd.conf"
     config.vm.provision "shell", inline: <<-SHELL
-    mv /tmp/vsftpd.conf /etc/vsftpd.conf
-    chown root:root /etc/vsftpd.conf
-    service vsftpd restart
+    mv /tmp/vsfptd.conf /etc/vsfptd.conf
+    chown root:root /etc/vsfptd.conf
+    service vsfptd restart
     SHELL
   end
 end
