@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  
+  config.vm.box = "debian/bookworm64"
+
+  config.vm.define "servidor" do |s|
+    s.vm.hostname = "ftp.example.test"
+    s.vm.network "private_network", ip: "192.168.56.10"
+    s.vm.provision "shell", path: "file/setup-ftp.sh"
+end
+
+  config.vm.define "cliente" do |c|
+    c.vm.hostname = "cliente"
+    c.vm.network "private_network", ip: "192.168.56.11"
+    c.vm.provision "shell", inline: "apt-get update && apt-get install -y ftp filezilla && apt-get install lftp -y"
+  end
+end
