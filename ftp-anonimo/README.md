@@ -74,8 +74,8 @@ Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
 | Error Detectado | Causa Probable | Acción Correctiva |
 | :--- | :--- | :--- |
 | `bash: setup.sh: Permission denied` | El script no es ejecutable en el Host. | Ejecuta `chmod +x vagrant/setup.sh`. |
-| `Job for vsftpd.service failed` | Error de sintaxis en `vsftpd.conf`. | Revisa el archivo con `sudo vsftpd -t`. |
-| `500 OOPS: config file not owned by root` | Permisos de la carpeta compartida. | Verifica `owner: "root"` en el Vagrantfile. |
+| `Job for vsftpd.service failed` | Error de sintaxis en `vsftpd.conf`. | Revisar el archivo con `sudo vsftpd -t`. |
+| `500 OOPS: config file not owned by root` | Permisos de la carpeta compartida. | Verifica `owner: "root"` en el propio Vagrantfile. |
 | `Connection timed out` | Conflicto con Firewall o IP. | Desactiva firewalls locales temporalmente. |
 
 
@@ -86,8 +86,4 @@ Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
 **Fecha:** Enero 2026  
 **Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
 
----
 
-**Autor:** Javier Padial González & David Ortiz Sierra  
-**Fecha:** Enero 2026  
-**Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
