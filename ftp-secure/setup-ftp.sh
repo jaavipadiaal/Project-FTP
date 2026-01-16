@@ -25,7 +25,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 echo "maria" > /etc/vsftpd.chroot_list
 
 
-cp /vagrant/file/vsftpd.conf /etc/vsftpd.conf
+cp /tmp/vsftpd.conf /etc/vsftpd.conf
 chown root:root /etc/vsftpd.conf
 
 echo "set ssl:verify-certificate no" > /home/vagrant/.lftprc
