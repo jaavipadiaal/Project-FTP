@@ -70,9 +70,9 @@ Pruebas de verificación:
 
 ## 🆘 5. Solución de Problemas Comunes
 
-Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
+Si falla, te dejamos esta tabla de errores frecuentes.
 
-> ⚠️ **IMPORTANTE:** La mayoría de errores en este proyecto derivan de permisos incorrectos en el sistema anfitrión (Windows/Mac).
+> ⚠️ **IMPORTANTE:** La mayoría de los errores que pueden ocurrir en este proyecto generalmente suelen derivar de permisos incorrectos en el sistema anfitrión.
 
 | Error Detectado | Causa Probable | Acción Correctiva |
 | :--- | :--- | :--- |
@@ -88,6 +88,7 @@ Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
 **Autor:** Javier Padial González & David Ortiz Sierra
 **Fecha:** Enero 2026  
 **Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
+
 
 
 
