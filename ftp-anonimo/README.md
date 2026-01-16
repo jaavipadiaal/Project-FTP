@@ -26,6 +26,7 @@ Para poder prevenir abusos de recursos o ataques de Denegación de Servicio (DoS
 
 ## 📂 2. Estructura del Proyecto
 
+```text
 .
 ├── Vagrantfile              # Definición de red privada y creacion de VMs
 ├── vagrant/                 # Carpeta sincronizada (/vagrant/vagrant en la VM)
@@ -85,5 +86,6 @@ Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
 **Autor:** Javier Padial González & David Ortiz Sierra
 **Fecha:** Enero 2026  
 **Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
+
 
 
