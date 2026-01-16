@@ -48,9 +48,9 @@
         state: restarted
         
     - name: Configurar lftp para ignorar certificados autofirmados
-  copy:
-    content: "set ssl:verify-certificate no"
-    dest: /home/vagrant/.lftprc
-    owner: vagrant
-    group: vagrant
-    mode: '0644'
+      copy:
+        content: "set ssl:verify-certificate no"
+        dest: /home/vagrant/.lftprc
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
