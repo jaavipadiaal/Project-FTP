@@ -35,6 +35,8 @@ Para poder prevenir abusos de recursos o ataques de Denegación de Servicio (DoS
 │   └── banner.msg           # Contenido informativo para el usuario
 └── README.md                # Documentación 
 
+```
+
 ---
 
 ## ⚙️ 3. Detalles del Provisionamiento (`inicio-servidor.sh`)
@@ -86,6 +88,7 @@ Si el despliegue falla, puedes consultar esta tabla de errores frecuentes.
 **Autor:** Javier Padial González & David Ortiz Sierra
 **Fecha:** Enero 2026  
 **Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
+
 
 
 
