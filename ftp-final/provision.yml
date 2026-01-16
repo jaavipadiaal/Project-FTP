@@ -1,28 +1,23 @@
 ---
-- name: Configuración Servidor FTP Seguro
+- name: Install and configure vsftpd (FTP Seguro)
   hosts: all
-  become: yes
+  become: true
+
   tasks:
-    - name: Instalar vsftpd y OpenSSL
-      apt:
-        name: [vsftpd, openssl]
+    - name: Install vsftpd package
+      ansible.builtin.apt:
+        name: vsftpd
         state: present
-        update_cache: yes
+        update_cache: true
 
-    - name: Crear usuarios locales
-      user:
-        name: "{{ item }}"
-        password: "{{ 'password' | password_hash('sha512') }}"
-      loop: [luis, maria, miguel]
+    - name: Install openssl package
+      ansible.builtin.apt:
+        name: openssl
+        state: present
+        update_cache: true
 
-    - name: Crear archivos de prueba para luis
-      file:
-        path: "/home/luis/{{ item }}"
-        state: touch
-      loop: [luis1.txt, luis2.txt]
-
-    - name: Generar certificado SSL autofirmado
-      command: >
+    - name: Generate self-signed SSL certificate
+      ansible.builtin.command: >
         openssl req -x509 -nodes -days 365 -newkey rsa:2048
         -keyout /etc/ssl/private/vsftpd.pem
         -out /etc/ssl/certs/example.test.pem
@@ -30,27 +25,76 @@
       args:
         creates: /etc/ssl/certs/example.test.pem
 
-    - name: Copiar lista de usuarios no enjaulados (maria)
-      copy:
-        content: "maria"
-        dest: /etc/vsftpd.chroot_list
+    - name: Ensure vsftpd service is enabled and started
+      ansible.builtin.service:
+        name: vsftpd
+        state: started
+        enabled: true
 
-    - name: Aplicar configuración de vsftpd
-      template:
-        src: templates/vsftpd.conf.j2
+    - name: Aplicar configuracion vsftpd (FORZADO)
+      ansible.builtin.template:
+        src: templates/vsftpd.conf.j2  
         dest: /etc/vsftpd.conf
-      notify: Reiniciar vsftpd
-
-  handlers:
-    - name: Reiniciar vsftpd
-      service:
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      register: config_result
+    
+    - name: Reiniciar si hubo cambios
+      ansible.builtin.service:
         name: vsftpd
         state: restarted
-        
-    - name: Configurar lftp para ignorar certificados autofirmados
-      copy:
+      when: config_result.changed
+
+    - name: Create chroot_list file
+      ansible.builtin.file:
+        path: /etc/vsftpd.chroot_list
+        state: touch
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Unjail maria user
+      ansible.builtin.lineinfile:
+        path: /etc/vsftpd.chroot_list
+        line: maria
+        state: present
+      notify: Restart vsftpd
+
+    - name: Create user accounts
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        shell: /bin/bash
+        state: present
+        create_home: true
+      loop:
+        - { username: 'luis', password: 'password' }
+        - { username: 'maria', password: 'password' }
+        - { username: 'miguel', password: 'password' }
+
+    - name: Create test files for luis
+      ansible.builtin.file:
+        path: "/home/luis/{{ item }}"
+        state: touch
+        owner: luis
+        group: luis
+        mode: '0644'
+      loop:
+        - luis1.txt
+        - luis2.txt
+
+    - name: Configurar lftp cliente
+      ansible.builtin.copy:
         content: "set ssl:verify-certificate no"
         dest: /home/vagrant/.lftprc
         owner: vagrant
         group: vagrant
         mode: '0644'
+
+  handlers:
+    - name: Restart vsftpd
+      ansible.builtin.service:
+        name: vsftpd
+        state: restarted

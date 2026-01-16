@@ -18,5 +18,10 @@ end
     c.vm.hostname = "cliente"
     c.vm.network "private_network", ip: "192.168.56.11"
     c.vm.provision "shell", inline: "apt-get update && apt-get install -y ftp filezilla && apt-get install lftp -y"
+    c.vm.provision "shell", inline: <<-SHELL
+      echo "set ssl:verify-certificate no" > /home/vagrant/.lftprc
+      chown vagrant:vagrant /home/vagrant/.lftprc
+      chmod 0644 /home/vagrant/.lftprc
+    SHELL
   end
 end
