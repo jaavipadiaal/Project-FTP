@@ -28,12 +28,14 @@ Para poder prevenir abusos de recursos o ataques de Denegación de Servicio (DoS
 
 ```text
 .
-├── Vagrantfile              # Definición de red privada y creacion de VMs
-├── vagrant/                 # Carpeta sincronizada (/vagrant/vagrant en la VM)
-│   ├── setup.sh             # Script de automatización (Bash)
-│   ├── vsftpd.conf          # Fichero de configuración
-│   └── banner.msg           # Contenido informativo para el usuario
-└── README.md                # Documentación 
+├── Vagrantfile             
+├── iniciar.sh              
+├── file/                
+│   ├── inicio-servidor.sh
+│   ├── inicio-cliente.sh             
+│   ├── vsftpd.conf         
+│   └── banner.msg           
+└── README.md                 
 
 ```
 
@@ -46,11 +48,11 @@ En el proceso de automatización nos hemos centralizado en un unico script (pued
 Las tareas críticas que realiza son:
 
 1.  **Instalación Silenciosa:**
-    Instalación de `vsftpd` y `openssl` mediante `apt-get` con el flag `-y` y asi podemos evitar bloqueos.
+    Instalación de `vsftpd` y `openssl` mediante `apt-get` con el modificador `-y` y para asi evitar bloqueos.
 2.  **Enlace de Configuración Directo:**
-    Copia el archivo `vsftpd.conf` desde el punto de montaje compartido `/vagrant/vagrant/` directamente a `/etc/vsftpd.conf`, asegurando que el servidor use nuestra configuración personalizada.
+    Copiamos el archivo `vsftpd.conf` desde el punto de montaje compartido `/vagrant/vagrant/` directamente a `/etc/vsftpd.conf`, asegurando asi que el servidor use nuestra configuración personalizada.
 3.  **Gestión de Permisos de Sistema:**
-    Aplica `chown root:root` y `chmod 644` al fichero de configuración, es un requisito indispensable para que nuestro servicio `vsftpd` arranque por motivos de seguridad.
+    Aplica `chown root:root` y `chmod 644` al fichero de configuración, es un requisito indispensable para que nuestro servicio `vsftpd` arranque.
 
 ---
 
@@ -87,7 +89,7 @@ Si falla, te dejamos esta tabla de errores frecuentes.
 
 **Autor:** Javier Padial González & David Ortiz Sierra
 **Fecha:** Enero 2026  
-**Proyecto:** Administración de Sistemas / Despliegue de Servicios FTP.
+**Proyecto:** Administración de Sistemas / FTP Anonymous.
 
 
 
