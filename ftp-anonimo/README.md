@@ -12,10 +12,10 @@ En este repositorio podemos encontrar la infraestructura y la configuracion de m
 * **Acceso Restringido:** Se habilita `anonymous_enable=YES` pero se fuerza `local_enable=NO`. Esto garantiza que **solo** aquellos usuarios anónimos puedan entrar, impidiendo que las cuentas del sistema sean vulneradas.
 * **Modo Espejo (Mirror):** La directiva `write_enable=NO` deshabilita cualquier permiso de escritura, protegiendo asi la integridad de los archivos alojados.
 
-### B. Políticas de Rendimiento y QoS
+### B. Políticas de Rendimiento
 Para poder prevenir abusos de recursos o ataques de Denegación de Servicio (DoS), hemos empleado la siguiente configuracion:
 * **Control de Conexiones:** `max_clients=200` este nos limita la carga simultánea en el servidor.
-* **Limitación de Ancho de Banda:** `anon_max_rate=51200`. (Configurado como $50 \times 1024$ bytes/segundo para cumplir con el requisito exacto de **50KB/s**).
+* **Limitación de Ancho de Banda:** `anon_max_rate=51200`. (**50KB/s** exacto).
 * **Gestión de Inactividad:** `idle_session_timeout=30` nos aseguramos que las conexiones colgadas se liberen justo tras 30 segundos, optimizando asi el uso de memoria.
 
 ### C. Experiencia del Usuario (Mensajes)
@@ -29,7 +29,7 @@ Para poder prevenir abusos de recursos o ataques de Denegación de Servicio (DoS
 ```text
 .
 ├── Vagrantfile             
-├── iniciar.sh              
+├── iniciar.sh  **script automatizado inicia maquina y conecta cliente y prepara conexion**                
 ├── file/                
 │   ├── inicio-servidor.sh
 │   ├── inicio-cliente.sh             
@@ -48,9 +48,9 @@ En el proceso de automatización nos hemos centralizado en un unico script (pued
 Las tareas críticas que realiza son:
 
 1.  **Instalación Silenciosa:**
-    Instalación de `vsftpd` y `openssl` mediante `apt-get` con el modificador `-y` y para asi evitar bloqueos.
+    Instalación de `vsftpd` y `openssl` mediante `apt-get` porque apt install no lo recomienda vagrant 
 2.  **Enlace de Configuración Directo:**
-    Copiamos el archivo `vsftpd.conf` desde el punto de montaje compartido `/vagrant/vagrant/` directamente a `/etc/vsftpd.conf`, asegurando asi que el servidor use nuestra configuración personalizada.
+    Copiamos el archivo `vsftpd.conf` desde el punto de montaje compartido `/vagrant/file` directamente a `/etc/vsftpd.conf`, asegurando asi que el servidor use nuestra configuración personalizada.
 3.  **Gestión de Permisos de Sistema:**
     Aplica `chown root:root` y `chmod 644` al fichero de configuración, es un requisito indispensable para que nuestro servicio `vsftpd` arranque.
 
@@ -62,7 +62,7 @@ Pruebas de verificación:
 
 | Requisito | Método de Verificación | Comando / Acción | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
-| **Protocolo de Red** | Verificar escucha IPv4 | `netstat -plnt` | El puerto 21 debe estar en `0.0.0.0` |
+| **Protocolo de Red** | Verificar escucha IPv4 | `ss -tlpn` | El puerto 21 debe estar en `0.0.0.0` |
 | **Acceso Seguro** | Intento de login local | `ftp localhost` | Mensaje: `530 Login incorrect` |
 | **Anonimato** | Login sin credenciales | `ftp 192.168.56.10` | Acceso concedido (anonymous) |
 | **QoS (Banda)** | Descarga de prueba | `get archivo_grande` | Tasa limitada a **50KB/s** |

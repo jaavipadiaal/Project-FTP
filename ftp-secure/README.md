@@ -20,7 +20,7 @@ Para poder proteger el tráfico frente a los ataques, hemos aplicado estas direc
 ---
 
 ## 📂 2. Estructura del Proyecto
-Este despliegue usa a la propia carpeta compartida `/vagrant/vagrant/` para que asi los cambios en el Host se apliquen de manera inmediata al reiniciar el servicio en la VM.
+Este despliegue usa a la propia carpeta compartida `/vagrant/file/` para que asi los cambios en el Host se apliquen de manera inmediata al reiniciar el servicio en la VM.
 
 ```text
 .
@@ -69,7 +69,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 echo "maria" > /etc/vsftpd.chroot_list
 
 # 3.4. Aplicación de la configuración final
-cp /vagrant/vagrant/vsftpd.conf /etc/vsftpd.conf
+cp /vagrant/file/vsftpd.conf /etc/vsftpd.conf
 chown root:root /etc/vsftpd.conf
 chmod 644 /etc/vsftpd.conf
 
@@ -123,9 +123,9 @@ max_clients=15
 ```  
 ---
 
-## 🧪 4. Validación de los Requisitos (QA)
+## 🧪 4. Validación de los Requisitos
 
-Para poder garantizar que la configuración de seguridad y rendimiento cumple con lo que esta solicitado en `ftp-seguro.html`, debemos de realizar las siguientes pruebas desde la máquina cliente o un cliente externo (como FileZilla):
+Para poder garantizar que funciona debemos de realizar las siguientes pruebas desde la máquina cliente o un cliente externo (como FileZilla):
 
 | Requisito | Acción de Verificación | Resultado Esperado |
 | :--- | :--- | :--- |
